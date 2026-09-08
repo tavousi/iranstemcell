@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>داشبورد ارزیابی سند ملی علوم و فناوری‌های سلول‌های بنیادی — نسخه قابل ویرایش</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#f4f6f9; --card:#ffffff; --text:#1f2937; --muted:#6b7280;
+  --border:#e5e7eb; --primary:#2563eb; --primary-dark:#1e40af;
+  --green-dark:#15803d; --green-light:#22c55e;
+  --yellow:#eab308; --orange:#f97316; --red:#dc2626;
+  --shadow:0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 15px -3px rgba(0,0,0,.1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Tahoma,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.container{max-width:1400px;margin:0 auto;padding:20px}
+header{background:linear-gradient(135deg,#173f63,#2563eb);color:#fff;padding:18px 24px;border-radius:12px;margin-bottom:20px;box-shadow:var(--shadow-lg)}
+.brand-header{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand-identity{display:flex;align-items:center;gap:14px;min-width:0}
+.brand-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    width: 90px;
+    height: 90px;
+    
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.brand-mark img {
+    width: 100%;
+    height: 100%;
+    
+    object-fit: contain;
+    display: block;
+}
+.brand-org{font-size:.86rem;opacity:.92;margin-bottom:3px}
+.brand-unit{font-size:.8rem;opacity:.82}
+.brand-title{font-size:1.55rem;margin:8px 0 4px}
+.brand-subtitle{opacity:.9;font-size:.92rem}
+.brand-credit{margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.18);font-size:.78rem;opacity:.86}
+@media(max-width:768px){.brand-header{align-items:flex-start}.brand-mark{width:52px;height:52px;flex-basis:52px;font-size:.7rem}.brand-title{font-size:1.15rem}}
+nav.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;background:#fff;padding:10px;border-radius:10px;box-shadow:var(--shadow)}
+nav.tabs button{padding:10px 18px;border:none;background:transparent;cursor:pointer;border-radius:8px;font-family:inherit;font-size:.95rem;color:var(--muted);transition:all .2s}
+nav.tabs button:hover{background:#f3f4f6}
+nav.tabs button.active{background:var(--primary);color:#fff}
+.card{background:var(--card);border-radius:12px;padding:20px;box-shadow:var(--shadow);margin-bottom:20px}
+.card h2{font-size:1.2rem;margin-bottom:15px;color:var(--primary-dark);border-bottom:2px solid var(--border);padding-bottom:8px}
+.card h3{font-size:1.05rem;margin:12px 0 8px;color:#374151}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-bottom:20px}
+.stat-box{background:#fff;padding:18px;border-radius:10px;box-shadow:var(--shadow);border-right:4px solid var(--primary)}
+.stat-box .label{font-size:.85rem;color:var(--muted);margin-bottom:5px}
+.stat-box .value{font-size:1.6rem;font-weight:bold;color:var(--text)}
+.stat-box.green-dark{border-right-color:var(--green-dark)}
+.stat-box.green-light{border-right-color:var(--green-light)}
+.stat-box.yellow{border-right-color:var(--yellow)}
+.stat-box.orange{border-right-color:var(--orange)}
+.stat-box.red{border-right-color:var(--red)}
+.bar-row{display:flex;align-items:center;margin:10px 0;gap:12px}
+.bar-label{min-width:260px;font-size:.9rem}
+.bar-track{flex:1;height:28px;background:#e5e7eb;border-radius:6px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;color:#fff;font-size:.85rem;font-weight:bold;transition:width .6s}
+.bar-value{min-width:50px;text-align:left;font-weight:bold;font-size:.95rem}
+.goal-bar{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.strategy-card{border:1px solid var(--border);border-radius:10px;padding:15px;margin-bottom:12px;cursor:pointer;transition:all .2s}
+.strategy-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.strategy-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.strategy-title{font-weight:bold;font-size:1rem}
+.strategy-stats{display:flex;gap:15px;flex-wrap:wrap;font-size:.85rem;color:var(--muted);margin-top:10px}
+.strategy-stats span{display:flex;align-items:center;gap:5px}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.dot.green-dark{background:var(--green-dark)}
+.dot.green-light{background:var(--green-light)}
+.dot.yellow{background:var(--yellow)}
+.dot.orange{background:var(--orange)}
+.dot.red{background:var(--red)}
+.action-item{padding:10px 12px;border-radius:6px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.9rem;border:1px solid var(--border)}
+.action-item.green-dark{background:#dcfce7;border-color:#15803d}
+.action-item.green-light{background:#bbf7d0;border-color:#22c55e}
+.action-item.yellow{background:#fef9c3;border-color:#eab308}
+.action-item.orange{background:#ffedd5;border-color:#f97316}
+.action-item.red{background:#fee2e2;border-color:#dc2626}
+.action-title{flex:1;font-weight:500}
+.action-badge{padding:3px 10px;border-radius:12px;font-size:.75rem;color:#fff;white-space:nowrap}
+.btn{padding:8px 16px;border:none;border-radius:6px;cursor:pointer;font-family:inherit;font-size:.9rem;transition:all .2s}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-secondary{background:#e5e7eb;color:var(--text)}
+.btn-secondary:hover{background:#d1d5db}
+.btn-danger{background:var(--red);color:#fff}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+.filters input,.filters select{padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:.9rem}
+.filters input{flex:1;min-width:200px}
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.modal.active{display:flex}
+.modal-content{background:#fff;border-radius:12px;padding:25px;max-width:700px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-content h2{margin-bottom:15px;color:var(--primary-dark)}
+.modal-brand{font-size:.75rem;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:12px}
+.form-group{margin-bottom:15px}
+.form-group label{display:block;margin-bottom:5px;font-weight:bold;font-size:.9rem}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:.9rem}
+.form-group textarea{min-height:80px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.close-btn{float:left;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted)}
+.legend{display:flex;gap:15px;flex-wrap:wrap;margin:15px 0;font-size:.85rem}
+.legend-item{display:flex;align-items:center;gap:6px}
+.hidden{display:none}
+.chart-container{position:relative;height:300px;margin:15px 0}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+table th,table td{padding:10px;text-align:right;border-bottom:1px solid var(--border);font-size:.9rem}
+table th{background:#f9fafb;font-weight:bold}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.75rem;color:#fff}
+@media(max-width:768px){
+  .bar-label{min-width:150px;font-size:.8rem}
+  .form-row{grid-template-columns:1fr}
+  header h1{font-size:1.3rem}
+  nav.tabs button{padding:8px 12px;font-size:.85rem}
+}
+@media print{body{background:#fff}.container{max-width:none;padding:0}header{border-radius:0;box-shadow:none}.tabs,.btn,.filters{display:none!important}.card{box-shadow:none;border:1px solid #ddd}.modal{display:none!important}}
+
+/* ===== امکانات ویرایش و ذخیره ===== */
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.toolbar .btn{white-space:nowrap}
+.editor-list{display:grid;gap:12px}
+.editor-card{border:1px solid var(--border);border-radius:10px;padding:15px;background:#fff}
+.editor-card .editor-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.editor-card .editor-actions{display:flex;gap:6px;flex-wrap:wrap}
+.editor-card .meta-line{font-size:.82rem;color:var(--muted);margin-top:6px}
+.btn-outline{background:#fff;color:var(--primary);border:1px solid var(--primary)}
+.btn-success{background:#15803d;color:#fff}
+.btn-warning{background:#b45309;color:#fff}
+.small-help{font-size:.8rem;color:var(--muted);margin-top:7px}
+.sync-banner{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;border-radius:8px;padding:10px 12px;margin-bottom:15px;font-size:.85rem}
+.readonly-field{background:#f9fafb}
+.program-strategy{border:1px solid var(--border);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.program-strategy > .program-head{padding:12px 15px;background:#f9fafb;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.program-actions{padding:8px 15px 12px}
+.empty-state{padding:25px;text-align:center;color:var(--muted)}
+
+
+/* ===== تب سیری در سند: نمایش اینفوگرافی به‌صورت تصویر ===== */
+.document-viewer-card{background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:16px;margin-bottom:20px}
+.document-viewer-toolbar{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.document-viewer-toolbar .btn{min-width:44px}
+.document-zoom-info{min-width:78px;text-align:center;font-weight:bold;color:var(--primary-dark)}
+.document-canvas-wrap{position:relative;width:100%;height:calc(100vh - 255px);min-height:520px;max-height:900px;overflow:hidden;background:#dbe7f2;border:1px solid var(--border);border-radius:10px;cursor:grab;touch-action:none}
+.document-canvas-wrap.dragging{cursor:grabbing}
+#documentImage{position:absolute;top:0;left:0;max-width:none;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;transform-origin:0 0;box-shadow:0 5px 20px rgba(0,0,0,.18);background:#fff}
+.document-help{margin-top:10px;padding:10px 12px;border-radius:8px;background:#f8fafc;border:1px solid var(--border);color:var(--muted);font-size:.82rem;text-align:center}
+.document-error{padding:30px;text-align:center;color:#991b1b;background:#fef2f2;border:1px solid #fecaca;border-radius:8px}
+@media(max-width:768px){.document-canvas-wrap{height:calc(100vh - 230px);min-height:420px}}
+
+</style>
+</head>
+<body>
+<div class="container">
+
+    <header>
+        <div class="brand-header">
+
+            <div class="brand-identity">
+
+                <!-- نشان رسمی شورای عالی انقلاب فرهنگی -->
+                <div class="brand-mark"
+                     aria-label="نشان رسمی شورای عالی انقلاب فرهنگی">
+
+                    <img 
+                        src="Logo-shora.png"
+                        alt="نشان رسمی شورای عالی انقلاب فرهنگی"
+                        title="شورای عالی انقلاب فرهنگی">
+
+                </div>
+        <div>
+          <div class="brand-org">دبیرخانه شورای عالی انقلاب فرهنگی</div>
+          <div class="brand-unit">معاونت فناوری و اقتصاد دانش‌بنیان</div>
+          <h1 class="brand-title">🧬 داشبورد ارزیابی اجرای سند ملی علوم و فناوری‌های سلول‌های بنیادی</h1>
+          <p class="brand-subtitle">ارزیابی وضعیت اجرای سند (۱۳۹۲–۱۴۰۱) | سامانه پایش و ارزیابی اجرای اسناد</p>
+        </div>
+      </div>
+    </div>
+    <div class="brand-credit">تهیه و توسعه: دبیرخانه شورای عالی انقلاب فرهنگی – معاونت فناوری و اقتصاد دانش‌بنیان</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn" data-tab="document">📜 سیری در سند</button>
+    <button class="tab-btn active" data-tab="overview">📊 نمای کلی</button>
+    <button class="tab-btn" data-tab="goals">🎯 اهداف کلان</button>
+    <button class="tab-btn" data-tab="strategies">🗂️ راهبردها و اقدامات</button>
+    <button class="tab-btn" data-tab="program">📚 کل برنامه</button>
+    <button class="tab-btn" data-tab="actions">📋 فهرست اقدامات</button>
+    <button class="tab-btn" data-tab="reports">📈 گزارش‌ها</button>
+  </nav>
+
+  <div id="app"></div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeModal()">×</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script id="dashboard-data" type="application/json">
+{
+  "metadata": {
+    "title": "سند ملی علوم و فناوری‌های سلول‌های بنیادی",
+    "period": "1392-1401",
+    "horizon": "1404",
+    "lastUpdate": "2026-09-07T09:11:40.833Z"
+  },
+  "goals": [
+    {
+      "id": 1,
+      "title": "خوداتکایی در مواد اولیه، تجهیزات آزمایشگاهی و حیوانات آزمایشگاهی (تا 90%)",
+      "weight": 20,
+      "achievement": 80,
+      "description": "تحقق 80 درصدی بر اساس گزارش‌های دریافتی",
+      "notes": "در راستای  تحقق  هدف کلان شماره 1، میزان تحقق براساس گزارش های دریافتی، 80 درصد  تخمین زده‌شده است. این مستندات بر مبنای سه عنوان کلی تجهیزات آزمایشگاهی، حیوانات آزمایشگاهی و خدمات درمانی دسته‌بندی‌شده‌اند. این سه دسته در پیوست ها درج شده است. ",
+      "isMeasurable": true
+    },
+    {
+      "id": 2,
+      "title": "تولید ثروت ملی از طریق به‌کارگیری علم و فناوری (2% ارزش بازار جهانی)",
+      "weight": 20,
+      "achievement": null,
+      "isMeasurable": false,
+      "description": "عدم امکان محاسبه کمی میزان دقیق فروش شرکت‌ها\nولی برآورد میزان فروش سالیانه شرکتهای دانش بنیان در سال 1398 به میزان 528 میلیارد تومان و در سال 1399 به میزان 4 هزار و 276 میلیارد تومان است.",
+      "notes": "نیازمند بررسی - داده‌های فروش شرکت‌ها در دسترس نیست"
+    },
+    {
+      "id": 3,
+      "title": "استقلال و خودکفایی در انواع بانک‌های سلولی ملی",
+      "weight": 20,
+      "achievement": 80,
+      "description": "- حمایت از 3 بانک پیش ساز سلولهای بنیادی خون‌ساز (بانک خون‌بند ناف رویان، بانک خون‌بند ناف سازمان انتقال خون ایـران و بانک خون‌بند ناف مرکز تحقیقات هماتولوژی انکولوژی و پیوند سلول‌های بنیادی، بیمارستان شریعتی، دانشگاه علوم پزشکی تهران)\n- حمایت از تشکیل 5 بانک سلوری از میان سایر بانک های سلولی\n",
+      "notes": "•\tبانک رده های سلول های بنیادی رویانی انسانی\n•\tبانک جامع اطلاعات بیولوژیک و زنجیره تامین انواع سلول های بنیادی آماده مصرف\n•\tبانک سلول های بنیادی مزانشیمی پالپ دندان انسان\n•\tبانک سلول های شبه بتا پانکراسی\n•\tبانک سلول های بنیادی مشتق از خون قاعدگی ",
+      "isMeasurable": true
+    },
+    {
+      "id": 4,
+      "title": "مشارکت بخش‌های غیردولتی (حداقل 20% مراکز سلول‌درمانی)",
+      "weight": 20,
+      "achievement": 100,
+      "description": "2 مرکز غیردولتی (مرکز سلول درمانی پژوهشگاه رویان و مرکز سلول درمانی بیمارستان گاندی) از میان 10 مرکز سلول درمانی نوین ",
+      "notes": "شایان ذکر است مراکز سلول درمانی نوین به سلول درمانی های غیر از پیوند سلول های بنیادی خونساز می پردازند. ",
+      "isMeasurable": true
+    },
+    {
+      "id": 5,
+      "title": "تولید دانش و فناوری‌های نوین تا رتبه دهم دنیا",
+      "weight": 20,
+      "achievement": 70,
+      "description": "رتبه 13 جهانی در Scopus ",
+      "notes": "هدف: رتبه 10 تا 1404",
+      "isMeasurable": true
+    }
+  ],
+  "strategies": [
+    {
+      "id": 1,
+      "title": "زیرساخت خوداتكا",
+      "goalIds": [
+        1,
+        3
+      ],
+      "description": "ایجاد و ارتقای زیرساخت های لازم برای توسعه و خوداتكایی و كسب مرجعیت علمی و فناوری"
+    },
+    {
+      "id": 2,
+      "title": "ترویج و گفتمان‌سازی",
+      "goalIds": [
+        5
+      ],
+      "description": "ترویج، فرهنگ سازی و اطلاع رسانی به منظور بهره مندی جامعه علمی از دستاوردها و پیشرفت های این حوزه"
+    },
+    {
+      "id": 3,
+      "title": "تعامل منطقه‌ای و جهانی",
+      "goalIds": [
+        2,
+        4
+      ],
+      "description": "تعامل فعال و اثرگذار با دیگر كشورها به خصوص كشورهای منطقه و جهان اسلام"
+    },
+    {
+      "id": 4,
+      "title": "تنظیم مقررات",
+      "goalIds": [
+        1,
+        3,
+        4
+      ],
+      "description": "تدوین، بازنگری، اصلاح و روزآمد كردن قوانین، مقررات و استانداردها"
+    },
+    {
+      "id": 5,
+      "title": "نیروی انسانی",
+      "goalIds": [
+        5
+      ],
+      "description": "جذب، تربیت و توانمندسازی نیروی انسانی"
+    },
+    {
+      "id": 6,
+      "title": "تحقیقات",
+      "goalIds": [
+        0
+      ],
+      "description": "حمایت از انجام تحقیقات در راستای تولید دانش و توسعه فناوری "
+    },
+    {
+      "id": 7,
+      "title": "تجاری‌سازی",
+      "goalIds": [
+        0
+      ],
+      "description": "تجاری سازی دستاوردها، تقویت تولید، ساماندهی خدمات و تسهیل فضای كسب و كار"
+    },
+    {
+      "id": 8,
+      "title": "تعامل بین‌رشته‌ای",
+      "goalIds": [
+        0
+      ],
+      "description": "تعامل فعال و مؤثر با دیگر علوم مرتبط به ویژه حوزه علوم دینی"
+    },
+    {
+      "id": 9,
+      "title": "الهام از آموزه‌های الهی",
+      "goalIds": [
+        0
+      ],
+      "description": "الهام گیری از آموزه‌های الهی در حوزه‌های فقهی، اخلاقی و معرفتی در سیاست گذاری، برنامه ریزی و اجرای علوم و فناوری های سلول های بنیادی"
+    }
+  ],
+  "actions": [
+    {
+      "id": 1,
+      "title": "ایجاد و توسعه مراکز تحقیقات، فناوری، تولید و خدمات از طریق ایجاد مراكز پژوهشی و رشته های علمی",
+      "strategyId": 1,
+      "owner": "معاونت علمی ریاست جمهوری / دانشگاه‌های علوم پزشکی",
+      "status": "achieved",
+      "achievement": 90,
+      "description": "تأسیس 12 مرکز جامع در کلان‌مناطق (تهران، شیراز، تبریز، کرمان، یزد، مشهد، رویان، تربیت مدرس، شریف، کرمانشاه، زاهدان، ایران)",
+      "weight": 1,
+      "notes": "- تهران و تبریز در سال 1395 \n- شیراز در سال1396 \n- کرمان، یزد، ایران، مشهد، کرمانشاه، زاهدان و پژوهشگاه رویان و دانشگاه های تربیت مدرس و صنعتی شریف طی سال‌های 1397 تا شهریورماه 1401 \n"
+    },
+    {
+      "id": 2,
+      "title": "ایجاد سامانه اطلاعات و شبکه تحقیقات و فناوری و اطلاع‌رسانی",
+      "strategyId": 1,
+      "owner": "ستاد توسعه",
+      "status": "completed",
+      "achievement": 95,
+      "description": "راه اندازی 5 سامانه",
+      "weight": 1,
+      "notes": "- وبگاه ستاد (3M بازدید)\n- ایجاد وبگاه انگلیسی ستاد\n- سامانه ثبت اطلاعات فعالان\n- اپلیکیشن شبکه سلول‌های بنیادی\n- ایجاد شبکه فعالان"
+    },
+    {
+      "id": 3,
+      "title": "تقویت و حمایت از دانشگاه‌ها و پژوهشگاه‌ها در تأمین تجهیزات و فضا",
+      "strategyId": 1,
+      "owner": "معاونت علمی / دانشگاه‌ها",
+      "status": "achieved",
+      "achievement": 85,
+      "description": "تجهیز مراکز جامع و آزمایشگاه‌ها",
+      "weight": 1,
+      "notes": "ستاد احداث و راه‌اندازی مراکز پزشكی بازساختی صورت وابسته به دانشگاه‌های را از سال 1395 در دستور کار قرار داد که در اقدام یک به آن اشاره شده است."
+    },
+    {
+      "id": 4,
+      "title": "ایجاد مراکز تولید و تکثیر و نگهداری حیوانات آزمایشگاهی",
+      "strategyId": 1,
+      "owner": "دانشگاه علوم پزشکی کرمان",
+      "status": "completed",
+      "achievement": 95,
+      "description": "انجام 13 فعالیت حمایتی از جمله حمایت از مزرعه ملی حیوانات آزمایشگاهی کرمان و اتاق تمیز SCID",
+      "weight": 1,
+      "notes": "مرکز ملی تکثیر، پرورش و نگهداری حیوانات آزمایشگاهی ایران\nایجاد اتاق تمیز SCID در مرکز فوق\nتهیه پیش‌نویس راهنمای اخلاق کار با حیوانات آزمایشگاهی\nحمایت از طرح تولید موش‌های دارای بیماری MS \nبازدید از ظرفیت‌های حوزه حیوانات آزمایشگاهی کشور\nبرگزاری سمپوزیوم مدل‌سازی حیوانی و تحقیقات درون‌تنی\nراه‌اندازی 2 قطب حیوانات آزمایشگاهی دریایی و SPF در کشور\nحمایت از راه‌اندازی قطب حیوانات آزمایشگاهی SPF  کشور در دانشگاه علوم پزشکی لرستان \nحمایت از راه‌اندازی قطب حیوانات آزمایشگاهی دریایی در دانشگاه علوم پزشکی بوشهر \nحمایت از راه اندازی مرکز حیوانات آزمایشگاهی دانشگاه علوم پزشکی کردستان \nمرکز تحقیقات و پرورش حیوانات آزمایشگاهی دانشگاه علوم پزشکی ارومیه\nحمایت از راه اندازی آزمایشگاه جراحی میکروسکوپی جهت مطالعات پزشکی بازساختی  "
+    },
+    {
+      "id": 5,
+      "title": "ایجاد بانک اطلاعات داوطلبان اهدای سلول‌های بنیادی",
+      "strategyId": 1,
+      "owner": "وزارت بهداشت / ستاد",
+      "status": "completed",
+      "achievement": 95,
+      "description": "انجام 4 فعالیت از جمله شبکه ملی اهداکنندگان، سامانه insc.behdasht.gov.ir، عضویت در WMDA، بیش از 91340 نمونه تایپ‌شده",
+      "weight": 1,
+      "notes": "تشکیل شبکه ملی اهداکنندگان سلول‌های بنیادی خونساز و بانک¬های خون بندناف ایران\nراه اندازی سامانه امن شبکه ملی اهداکنندگان سلول‌های بنیادی خونساز ایران\nفرهنگ سازی سلول‌های بنیادی خونساز\nعضویت در انجمن جهانی اهداکنندگان سلول‌های بنیادی خونساز (WMDA)\n"
+    },
+    {
+      "id": 6,
+      "title": "ایجاد بانک‌های سلولی و بافتی در استان‌ها و شبکه‌سازی",
+      "strategyId": 1,
+      "owner": "ستاد / دانشگاه‌ها",
+      "status": "completed",
+      "achievement": 95,
+      "description": "انجام 3 فعالیت عمده از جمهل بانک خون بندناف رویان، سازمان انتقال خون، بیمارستان شریعتی و بانک‌های مزانشیمی، پالپ دندان، شبه بتا",
+      "weight": 1,
+      "notes": "الف. حمایت از راه اندازی و توسعه بانک‌های سلولی و بافتی\nب. مراکز پذیره‌نویسی اهداکنندگان سلول‌های بنیادی خونساز\nج اطلاعات ثبت شده در سامانه شبکه ملی اهداکنندگان سلول‌های بنیادی خونساز ایران"
+    },
+    {
+      "id": 7,
+      "title": "ایجاد شبکه آزمایشگاهی سلول‌های بنیادی",
+      "strategyId": 1,
+      "owner": "ستاد",
+      "status": "completed",
+      "achievement": 95,
+      "description": "انجام 6 فعالیت اجرایی و حمایتی مانند شبکه ملی مدل‌سازی حیوانی و تحقیقات درون‌تنی",
+      "weight": 1,
+      "notes": "الف. شبکه ملی مدل‌سازی حیوانی و تحقیقات درون تنی\nب. تشکیل شورای راهبردی شبکه ملی مدل‌سازی حیوانی و تحقیقات درون تنی\nج. تدوین برنامه سالیانه شبکه ملی مدل‌سازی حیوانی و تحقیقات درون‌تنی\nد. راه اندازی و پیشبرد وبگاه شبکه ملی مدل‌سازی حیوانی و تحقیقات درون‌تنی \nهـ. رصد وضعیت موجود حیوانات آزمایشگاهی در کشور\nو. حمایت از طرح‌های مدل‌سازی حیوانی تحقیقات درون‌تنی\n"
+    },
+    {
+      "id": 8,
+      "title": "ارزیابی و رتبه‌بندی مراکز بر اساس نظام اعتبارسنجی",
+      "strategyId": 1,
+      "owner": "پژوهشگاه رویان",
+      "status": "achieved",
+      "achievement": 70,
+      "description": "بررسی مقالات مراکز مهم فعال در این حوزه اعم از دانشگاههای علوم پزشکی یا سایر مراکز مرتبط بر اساس پارامترهای علم سنجی ",
+      "weight": 1,
+      "notes": "پارامترهای علم سنجی مانند ارجاعات سالیانه مراکز، تعداد چاپ مقالات 10 مرکز برتر از سال 1994، تعدادارجاعات به ازای هر مقاله و H Index  10 مرکز برتر تحقیقاتی "
+    },
+    {
+      "id": 9,
+      "title": "ایجاد مراکز نگهداری، آزمایشگاهی و جراحی حیوانات",
+      "strategyId": 1,
+      "owner": "دانشگاه‌ها",
+      "status": "completed",
+      "achievement": 95,
+      "description": "انجام 2 فعالیت عمده",
+      "weight": 1,
+      "notes": "الف. شبکه ملی مدلسازی حیوانی و تحقیقات درون‌تنی\nب. راه‌اندازی و پیشبرد مرکز ملی تکثیر، پرورش و نگهداری حیوانات آزمایشگاهی ایران\n"
+    },
+    {
+      "id": 10,
+      "title": "افزایش و توسعه مراکز پژوهشی-درمانی در تراز کشورهای پیشرفته",
+      "strategyId": 1,
+      "owner": "دانشگاه‌های علوم پزشکی",
+      "status": "achieved",
+      "achievement": 80,
+      "description": "حمایت از ایجاد و توسعه مراکز جامع سلول‌های بنیادی و پزشکی بازساختی",
+      "weight": 1,
+      "notes": "در اقدام شماره یک توضیحات آورده شده است."
+    },
+    {
+      "id": 11,
+      "title": "ایجاد انواع مراکز سلول‌درمانی استاندارد بین‌المللی",
+      "strategyId": 1,
+      "owner": "وزارت بهداشت",
+      "status": "completed",
+      "achievement": 95,
+      "description": "حمایت از ایجاد 20 مرکز پیوند سلول‌های بنیادی خونساز در بیمارستان‌های دانشگاهی و معتبر سراسر کشور ",
+      "weight": 1,
+      "notes": "با ساختارهای ایجاد شده میزان پیوند سلول‌های بنیادی خونساز انجام شده به حدود 1300 مورد در سال ارتقا یافته است. "
+    },
+    {
+      "id": 12,
+      "title": "انتشار خبرنامه‌ها، مجلات و نشریات علمی",
+      "strategyId": 2,
+      "owner": "ستاد",
+      "status": "completed",
+      "achievement": 95,
+      "description": "نشریه ترمیم\n16 جلد کتاب دکتر بهاروند",
+      "weight": 1,
+      "notes": ""
+    },
+    {
+      "id": 13,
+      "title": "به‌کارگیری رسانه‌های عمومی برای ترویج دستاوردها",
+      "strategyId": 2,
+      "owner": "ستاد / روابط عمومی",
+      "status": "achieved",
+      "achievement": 85,
+      "description": "اخبار روزانه، اپلیکیشن \"شبکه سلول‌های بنیادی\"، لینکدین، تعامل با رسانه ملی",
+      "weight": 1,
+      "notes": "روزانه حدود 40 خبر در این حوزه از دانش در رسانه‌های علمی، تولید و منتـشر می‌شود. "
+    },
+    {
+      "id": 14,
+      "title": "حمایت از برگزاری همایش‌ها، کارگاه‌ها و نشست‌های علمی",
+      "strategyId": 2,
+      "owner": "ستاد / دانشگاه‌ها",
+      "status": "achieved",
+      "achievement": 80,
+      "description": "برگزاری صدها کارگاه، 3 دوره جشنواره ملی، سمپوزیوم، مدارس فصلی، سلسله وبینارها، رویداد معرفی انجمن برتر دانشجویی، کنگره سالانه فناوری سلول‌های بنیادی",
+      "weight": 1,
+      "notes": ""
+    },
+    {
+      "id": 15,
+      "title": "عضویت و مشارکت در مجامع علمی بین‌المللی",
+      "strategyId": 3,
+      "owner": "ستاد",
+      "status": "achieved",
+      "achievement": 75,
+      "description": "ایجاد پایگاه همکاری با مرکز تعاملات بین‌المللی و کانون اندیشه و نوآوری",
+      "weight": 1,
+      "notes": "الف. پایگاه همکاری ستاد توسعه علوم و فناوری‌های سلول‌های بنیادی با سامانه متخصصان و کارآفرینان ایرانی خارج از کشور (مرکز تعاملات بین المللی علم و فناوری)\nب. تشکیل اتاق فکر دانشمندان علوم سلول‌های بنیادی و پزشکی بازساختی \" کانون اندیشه و نوآوری\"\n"
+    },
+    {
+      "id": 16,
+      "title": "توسعه همکاری‌های مشترک با کشورهای هدف",
+      "strategyId": 3,
+      "owner": "ستاد / وزارت خارجه",
+      "status": "initial_output",
+      "achievement": 65,
+      "description": "سفر به ژاپن، چین، نشست با سفیران آفریقایی، دیپلماسی دانش",
+      "weight": 1,
+      "notes": "الف. دیپلماسی دانش و فناوری جهت بررسی آخرین تحولات و مذاکره با مراکز سلول‌درمانی و پزشکی بازساختی برتر جهان\nب. بازدید از مراکز پیشرفته سلول‌درمانی و مراکز تحقیقات و تکنولوژی در زمینه سلول‌های بنیادی و پزشکی\n"
+    },
+    {
+      "id": 17,
+      "title": "بسترسازی برای همکاری‌های بین‌المللی مؤسسات داخلی",
+      "strategyId": 3,
+      "owner": "ستاد / دانشگاه‌ها",
+      "status": "achieved",
+      "achievement": 70,
+      "description": "برگزاری نشست ها و کارگاره های بهره‌گیری از دانشمندان ایرانی خارج و سایر دانشمندان",
+      "weight": 1,
+      "notes": "الف. بهره‌گیری از دانشمندان ایرانی مقیم خارج از کشور برای برگزاری همایش‌های داخلی\nب. نشست مجازی دبیر ستاد با سفیران مستقر در کشورهای آفریقایی\n"
+    },
+    {
+      "id": 18,
+      "title": "تدوین مقررات سلول‌درمانی و دستورالعمل‌ها",
+      "strategyId": 4,
+      "owner": "سازمان غذا و دارو / وزارت بهداشت",
+      "status": "achieved",
+      "achievement": 80,
+      "description": "تدوین و ابلاغ 6 مقرره که 3 مورد ابلاغ شده",
+      "weight": 1,
+      "notes": "- ضوابط ثبت فرآورده‌های بیولوژیک\n- راهنمای حداقل دستورزی سلول‌ها، بافت‌ها و محصولات بر پایه سلول انسانی\n- آیین‌نامه تأسیس و بهره‌برداری بخش پزشکی بازساختی و سلول‌درمانی در بیمارستان‌های دولتی، عمومی غیر‌دولتی و خصوصی \n-ضوابط ثبت و ورود فرآورده‌های سلول، بافت و ژن‌درمانی\n-راهنمای فرآورده‌های سلول‌درمانی\n-راهنمای ژن‌درمانی\n"
+    },
+    {
+      "id": 19,
+      "title": "تدوین و ترویج کدهای اخلاقی مورد نیاز",
+      "strategyId": 4,
+      "owner": "ستاد / کمیته اخلاق",
+      "status": "achieved",
+      "achievement": 90,
+      "description": "تدوین راهنمای اخلاق در پژوهش بر سلول‌های بنیادی در سال 1392",
+      "weight": 1,
+      "notes": ""
+    },
+    {
+      "id": 20,
+      "title": "تدوین استانداردهای فعالیت‌های تحقیقاتی، درمانی و تولیدی",
+      "strategyId": 4,
+      "owner": "وزارت بهداشت",
+      "status": "achieved",
+      "achievement": 85,
+      "description": "ایجاد 3 کمیته‌های کشوری فنی محصولات، تجهیزات و خدمات بالینی",
+      "weight": 1,
+      "notes": "•\tکمیته کشوری فنی محصولات و فرآورده های سلول‌های بنیادی و پزشکی بازساختی\n•\tکمیته کشوری فنی بابت تجهیزات سلول‌های بنیادی و پزشکی بازساختی \n•\tکمیته کشوری توسعه خدمات بالینی سلول‌های بنیادی و پزشکی بازساختی "
+    },
+    {
+      "id": 21,
+      "title": "ایجاد رشته‌ها و گرایش‌های مورد نیاز در تحصیلات تکمیلی",
+      "strategyId": 5,
+      "owner": "وزارت علوم / وزارت بهداشت",
+      "status": "completed",
+      "achievement": 95,
+      "description": "ایجاد 2 رشته و دوره تخصصی و افزایش ظرفیت پذیرش از 59 نفر به 151 نفر و برگزاری 4  دوره مهارتی\n",
+      "weight": 1,
+      "notes": "ارشد فناوری‌های سلول‌های بنیادی 1399\nفوق‌تخصصی کودکان 1398\nدوره آموزش مهارتی و حرفه ای علوم پزشکی مورد نیاز مرتبط با حوزه سلول‌های بنیادی و پزشکی بازساختی"
+    },
+    {
+      "id": 22,
+      "title": "اعزام متخصصان و دعوت از متخصصین برجسته خارجی",
+      "strategyId": 5,
+      "owner": "ستاد / دانشگاه‌ها",
+      "status": "achieved",
+      "achievement": 70,
+      "description": "اعزام دانشجو به هلند، دعوت از اساتید هاروارد، UCL، اراسموس",
+      "weight": 1,
+      "notes": ""
+    },
+    {
+      "id": 23,
+      "title": "تدوین فهرست موضوعات اولویت‌دار و سازوکار حمایت",
+      "strategyId": 6,
+      "owner": "ستاد",
+      "status": "achieved",
+      "achievement": 75,
+      "description": "26 کارگروه تخصصی با حضور  1500 مشارکت‌کننده\nطراحی و تشکیل دبیرخانه جوانی جمعیت\nتدوین شیوه نامه حمایت از طرح‌های فرزندآوری، درمان ناباروری و سلامت مادر و کودک\n",
+      "weight": 1,
+      "notes": ""
+    },
+    {
+      "id": 24,
+      "title": "اعطای پژوهانه تحقیقاتی به پژوهشگران",
+      "strategyId": 6,
+      "owner": "ستاد",
+      "status": "achieved",
+      "achievement": 80,
+      "description": "حمایت از 178 پروژه در 1394\n32 پروژه در 1398\n35 طرح در 1400",
+      "weight": 1,
+      "notes": "توسعه بستر پژوهش با اعطای پژوهانه‌ها و حمایت از توسعه و ترجمان دانش و فناوری "
+    },
+    {
+      "id": 25,
+      "title": "حمایت از انتشار نتایج تحقیقات در مجلات بین‌المللی",
+      "strategyId": 6,
+      "owner": "ستاد",
+      "status": "achieved",
+      "achievement": 75,
+      "description": "3 کنگره بین‌المللی با سخنرانان از 12 کشور",
+      "weight": 1,
+      "notes": ""
+    },
+    {
+      "id": 26,
+      "title": "تشویق محققین به فعالیت در مرزهای دانش و فناوری",
+      "strategyId": 6,
+      "owner": "ستاد",
+      "status": "achieved",
+      "achievement": 70,
+      "description": "انجام فعالیتهایی مانند جایزه ملی سلول‌های بنیادی و سمینارهای ایده‌پردازی",
+      "weight": 1,
+      "notes": "الف. برگزاری سمینارهای ایده‌پردازی و مسابقه جایزه ملی سلول‌های بنیادی و پزشکی بازساختی \nب. فعالیت‌های مراکز جامع سلول‌های بنیادی و پزشکی بازساختی در حوزه تجاری سازی و فناوری\n"
+    },
+    {
+      "id": 27,
+      "title": "تشویق بخش غیردولتی برای سرمایه‌گذاری",
+      "strategyId": 7,
+      "owner": "ستاد",
+      "status": "achieved",
+      "achievement": 75,
+      "description": "تشکیل کارگروه‌ فناوری و شرکت‏های دانش‌بنیان و حمایت از طرح‏های فناورانه\n",
+      "weight": 1,
+      "notes": "این کارگروه‌ه به‌عنوان بزرگ‌ترین اتاق فکر کشور در زمینه ایجاد، توسعه و تجاری‏سازی محصولات، خدمات و فناوری‏های سلول‌های بنیادی کشور، در بررسی و داوری طرحها و ایده‌های فناوری تولیدی واصله به ستاد نقش اصلی را بر عهده دارد."
+    },
+    {
+      "id": 28,
+      "title": "جلب مشارکت مردمی، خیرین و نهادهای عمومی",
+      "strategyId": 7,
+      "owner": "ستاد",
+      "status": "achieved",
+      "achievement": 80,
+      "description": "تفاهم‌نامه با خیریه‌ه و جلب حمایت شایان از مرکز طبی کودکان  و مراکز جامع سلولهای بنیادی و پزشکی بازساختی",
+      "weight": 1,
+      "notes": "اهداف ذیل در دستور کار قرار گرفت: \n•\tهدفمند کردن کمک به خیریه ها در راستای عقد تفاهم نامه توسعه ی فناوری های سلول های بنیادی و پزشکی بازساختی و ارائه خدمات بالینی به بیماران\n•\tفراهم کردن زمینه همکاری فارغ التحصیلان رشته های تخصصی سلول های بنیادی و حوزه پزشکی بازساختی جهت همکاری با مراکز احداث شده توسط خیرین و خیریه ها\n•\tانگیزه بخشی به مراکز خیریه در راستای ارائه خدمات تخصصی این حوزه به کشور های همسایه با همکاری مراکز بالینی کشور\n•\tمعرفی اخرین فناوری ها،خدمات ،محصولات و تجهیزات شرکت های دانش بنیان به مراکز خیریه\n"
+    },
+    {
+      "id": 29,
+      "title": "حمایت از تولید تجهیزات و مواد پرمصرف",
+      "strategyId": 7,
+      "owner": "ستاد / شرکت‌های دانش‌بنیان",
+      "status": "achieved",
+      "achievement": 80,
+      "description": "حمایت مادی از تولید محصولات با تخصیص 342 میلیارد ریال تسهیلات در 1400 به شرکت های دانش بنیان",
+      "weight": 1,
+      "notes": "الف. نیازسنجی بازار محصولات در کشور\nب. حمایت از تولید محصولات فناورانه در کشور\nج. کدگذاری بیش از 600 محصول حوزه سلول‌های بنیادی و پزشکی بازساختی\n"
+    },
+    {
+      "id": 30,
+      "title": "حمایت از ارائه خدمات درمانی مبتنی بر سلول‌های بنیادی",
+      "strategyId": 7,
+      "owner": "وزارت بهداشت",
+      "status": "achieved",
+      "achievement": 70,
+      "description": "برگزاری کارگروه مطالعات بالینی از 1400 و حمایت از طرح‌های فرزندآوری",
+      "weight": 1,
+      "notes": "اطلاعات تکمیلی در این خصوص در اقدام 23 بصورت کامل شرح داده شده است."
+    },
+    {
+      "id": 31,
+      "title": "پوشش بیمه‌ای کلیه خدمات سلول‌درمانی",
+      "strategyId": 7,
+      "owner": "شورای عالی بیمه سلامت",
+      "status": "initial",
+      "achievement": 15,
+      "description": "علی رغم پیگیری هزینه‌های پیوند سلول‌های بنیادی خونساز (مغزاستخوان) به عنوان باسابقهترین خدمت سلول درمانی با رعایت شرایط مشمول تعهدات بیمه‌ای سازمان‌های بیمه‌گر قرار نگرفته است.",
+      "notes": "متاسفانه علیرغم پیگیری های فراوان بعد از سالها همچنان موضوع پیوند سلول‌های بنیادی خونساز تحت پوشش بیمه قرار نگرفته و ضرورت دارد هرچه سریع تر بیماران این حوزه از خدمات بیمه ای ذیربط بهره مند گردند. ",
+      "weight": 1
+    },
+    {
+      "id": 32,
+      "title": "تدوین تعرفه‌های واقعی و عادلانه خدمات",
+      "strategyId": 7,
+      "owner": "وزارت بهداشت",
+      "status": "initial_output",
+      "achievement": 60,
+      "description": "تعرفه‌ها تدوین ولی هنوز به تصویب نهایی نرسیده",
+      "weight": 1,
+      "notes": "به دنبال تشکیل کمیته‌های متعدد با همکاری معاونت محترم درمان وزارت بهداشت، درمان و آموزش پزشکی و مدیریت‌های تابعه آن، تعرفه‌های پیشنهادی از سوی ستاد توسعه علوم و فناوری‌های سلول‌های بنیادی تدوین و به اداره پیوند معاونت درمان ارسال شد که هنوز به تصویب نهایی نرسیده است. البته هیئت دولت تعرفه خدمات سلول درمانی را تصویب و ابلاغ نموده است."
+    },
+    {
+      "id": 33,
+      "title": "حمایت از بازاریابی تولیدات شرکت‌های دانش‌بنیان",
+      "strategyId": 7,
+      "owner": "ستاد",
+      "status": "achieved",
+      "achievement": 70,
+      "description": "حمایت از شرکت های دانش بنیان، نمایشگاه‌های تخصصی، نشست ملی فن‌بازار، خانه فناوری و نوآوری ایران",
+      "weight": 1,
+      "notes": "الف. رشد کمی و کیفی شرکت های دانش بنیان\nب. معرفی مراکز و شرکت‌های دانش‌بنیان از طریق برگزاری نمایشگاه \nج. برپایی نشست ملی فن‏بازار در جشنواره سالیانه سلول‌های بنیادی\nد. نمایشگاه دائمی محصولات شرکت های دانش‎بنیان خانه فناوری و نواوری ایران\n"
+    },
+    {
+      "id": 34,
+      "title": "حمایت از نظریه‌پردازی و تحقیق در علوم پایه",
+      "strategyId": 8,
+      "owner": "ستاد / دانشگاه‌ها",
+      "status": "achieved",
+      "achievement": 85,
+      "description": "انجام بیش از 10 عنوان فعالیت",
+      "weight": 1,
+      "notes": "الف. برگزاری المپیاد دانش‏آموزی\nب. برگزاری المپیاد دانشجویی سلول‌های بنیادی و مهندسی بافت\nج. طراحی و ساخت آزمایشگاه سیار آموزشی سلول‌های بنیادی \nد. شوراهای منطقه‌ای توسعه علوم و فناوری‌های سلول‌های بنیادی و بازدیدهای استانی دبیرستاد\nهـ. رویداد استارتاپ سلول‌های بنیادی و پزشکی بازساختی\nو. راه ‏اندازی و تجهیز پژوهش‌سراهای سلول‌های بنیادی و پزشکی بازساختی در سطح کشور \nز. راه‌اندازی پژوهش‌سراها در 8 استان\nح. تأسیس انجمن‌ها و كمیته‌های دانشجویی سلول‌های بنیادی و پزشکی بازساختی با مشارکت دانشجویان دانشگاه‌های سراسر کشور\nط. تدوین آیین‌نامه ارزیابی انجمن‌های علمی دانشجویی در حوزه سلول‌های بنیادی و پزشکی بازساختی \nی. طرح سفیران دانش سلول‌های بنیادی و پزشكی بازساختی\nک. میزان رشد کشور بر اساس تولید علم در جهان\nل. تربیت نیروی انسانی جوان در حوزه سلول¬های بنیادی و پزشکی بازساختی\nم. رشد کشور بر اساس تعداد مراکز تحقیقاتی، دانشگاهی و پژوهشکده‌های فعال در حوزه سلول‌های بنیادی و پزشکی بازساختی\n"
+    },
+    {
+      "id": 35,
+      "title": "افزایش تولید علم دینی در زمینه احکام و اخلاق",
+      "strategyId": 9,
+      "owner": "ستاد / نهاد رهبری",
+      "status": "neglected",
+      "achievement": 9,
+      "description": "تشکیل کارگروه فرهنگی با خروجی محدود همراه با برگزاری همایش",
+      "notes": "الف. تشکیل کارگروه فرهنگی (اخلاق، فقه و حقوق)\nب. برگزاری همایش چالش‌های اخلاقی، حقوقی و فقهی سلول‌های بنیادی و پزشکی بازساختی\n",
+      "weight": 1
+    },
+    {
+      "id": 36,
+      "title": "تعامل اندیشمندان دینی و متخصصان برای تطابق با احکام اسلامی",
+      "strategyId": 9,
+      "owner": "ستاد",
+      "status": "achieved",
+      "achievement": 75,
+      "description": "همایش چالش‌های اخلاقی، حقوقی و فقهی 1394",
+      "weight": 1,
+      "notes": "با توجه به زمینه اعتقادی و اخلاقی کشور، پیـشرفت علم سلول های بنیادی و پزشکی بازساختی در گرو تعامل اندیشمندان علوم دینی و متخصصان سلول های بنیادی است و که در این زمینه اندیشمندان علوم دینی با دید باز کمک‌های شایانی را در پیـشرفت این حوزه به عمل آورده اند.  "
+    }
+  ],
+  "statusLabels": {
+    "completed": {
+      "label": "تکمیل‌شده",
+      "color": "green-dark",
+      "score": 100
+    },
+    "achieved": {
+      "label": "دستاورد عینی",
+      "color": "green-light",
+      "score": 75
+    },
+    "initial_output": {
+      "label": "خروجی اولیه",
+      "color": "yellow",
+      "score": 50
+    },
+    "initial": {
+      "label": "فعالیت اولیه",
+      "color": "orange",
+      "score": 25
+    },
+    "neglected": {
+      "label": "مغفول",
+      "color": "red",
+      "score": 0
+    }
+  },
+  "challenges": [
+    {
+      "id": 1,
+      "title": "بیمه خدمات و محصولات",
+      "description": "پوشش بیمه‌ای پیوند مغزاستخوان هنوز کامل نشده.",
+      "suggestion": "1- تجمیع منابع و تعیین متولی اصلی\n2- اولویت دادن به ثبت این محصولات و تسهیل این مسیر"
+    },
+    {
+      "id": 2,
+      "title": "تسریع نظام رگولاتوری",
+      "description": "فرآیند تنظیم‌گری و صدور مجوزها نیازمند تسریع است.",
+      "suggestion": "طراحی مسیر ویژه (VIP) و Conditional Approve مشابه EMA."
+    },
+    {
+      "id": 3,
+      "title": "حفظ رتبه کارآزمایی بالینی خاورمیانه",
+      "description": " جهت ورود محصولات به بازار، چند مرحله اصلی وجود دارد که مهم ترین و پرهزینه ترین آن انجام کارآزمایی های بالینی در فازهای مختلف است. در حال حاضر کشورمان دارای رتبه سوم ثبت کارآزمایی های بالینی منطقه خاورمیانه در سایت  NIHاست . \nبا توجه به نزدیکی تعداد ثبت کارآزمایی های بالینی کشور عربستان در مقایسه با ایران، احتمالاً رتبه سوم به راحتی از دست رفته و تنزل پیدا خواهد کرد. ",
+      "suggestion": "بهبود حمایت‌های مالی از کارآزمایی‌های بالینی"
+    },
+    {
+      "id": 4,
+      "title": "ارتباط بین‌سازمانی",
+      "description": "هماهنگی و اجرای مصوبات میان سازمان‌ها نیازمند تقویت است.",
+      "suggestion": "اتخاذ تدابیری جهت لازم الاجرا بودن مصوبات فیمابین سازمان های ذیربط"
+    }
+  ]
+}
+</script>
+<script>
+/* داده‌ها به‌صورت JSON داخل همین فایل HTML نگهداری می‌شوند و LocalStorage استفاده نمی‌شود. */
+const EMBEDDED_DATA = JSON.parse(document.getElementById("dashboard-data").textContent.trim());
+const ORIGINAL_EMBEDDED_JSON = document.getElementById("dashboard-data").textContent.trim();
+let DATA = JSON.parse(JSON.stringify(EMBEDDED_DATA));
+let currentTab = "overview";
+let charts = {};
+
+const STATUS_RULES = [
+  {key:"completed", label:"تکمیل‌شده", color:"green-dark", min:90.0000001, score:100},
+  {key:"achieved", label:"دستاورد عینی", color:"green-light", min:70, maxInclusive:90, score:75},
+  {key:"initial_output", label:"خروجی اولیه", color:"yellow", min:50, maxExclusive:70, score:50},
+  {key:"initial", label:"فعالیت اولیه", color:"orange", min:10, maxExclusive:50, score:25},
+  {key:"neglected", label:"مغفول", color:"red", min:-Infinity, maxExclusive:10, score:0}
+];
+const STATUS_BY_KEY = Object.fromEntries(STATUS_RULES.map(x=>[x.key,x]));
+
+function esc(value){
+  return String(value ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
+}
+function clampPercent(v){
+  const n=Number(v);
+  if(!Number.isFinite(n)) return 0;
+  return Math.max(0,Math.min(100,n));
+}
+function classifyAchievement(v){
+  const n=clampPercent(v);
+  if(n>90) return "completed";
+  if(n>=70) return "achieved";
+  if(n>=50) return "initial_output";
+  if(n>=10) return "initial";
+  return "neglected";
+}
+function syncActionStatus(a){
+  a.achievement=clampPercent(a.achievement);
+  a.status=classifyAchievement(a.achievement);
+  return a.status;
+}
+function syncAllStatuses(){ DATA.actions.forEach(syncActionStatus); }
+function nextId(arr){ return arr.length ? Math.max(...arr.map(x=>Number(x.id)||0))+1 : 1; }
+function getStrategy(id){ return DATA.strategies.find(x=>x.id===Number(id)); }
+function getAction(id){ return DATA.actions.find(x=>x.id===Number(id)); }
+function getChallenge(id){ return DATA.challenges.find(x=>x.id===Number(id)); }
+function getStrategyActions(sid){ return DATA.actions.filter(a=>a.strategyId===Number(sid)); }
+function statusPercent(status){ return STATUS_BY_KEY[status]?.score ?? 0; }
+function calcStrategyScore(sid){
+  const acts=getStrategyActions(sid); if(!acts.length) return 0;
+  const total=acts.reduce((s,a)=>s+statusPercent(syncActionStatus(a))*(Number(a.weight)||1),0);
+  const totalW=acts.reduce((s,a)=>s+(Number(a.weight)||1),0);
+  return totalW?total/totalW:0;
+}
+function statusCount(){
+  const c={completed:0,achieved:0,initial_output:0,initial:0,neglected:0};
+  DATA.actions.forEach(a=>c[syncActionStatus(a)]++);
+  return c;
+}
+function isMeasurableGoal(goal){return goal.isMeasurable!==false && Number.isFinite(Number(goal.achievement));}
+function calcOverallGoals(){
+  const measurable=DATA.goals.filter(isMeasurableGoal);
+  const totalW=measurable.reduce((s,g)=>s+(Number(g.weight)||0),0);
+  const total=measurable.reduce((s,g)=>s+Number(g.achievement)*(Number(g.weight)||0),0);
+  return totalW?(total/totalW).toFixed(1):"—";
+}
+
+function saveToEmbeddedState(){
+  syncAllStatuses();
+  DATA.metadata.lastUpdate=new Date().toISOString();
+}
+function buildUpdatedHtml(){
+  saveToEmbeddedState();
+  const json=JSON.stringify(DATA,null,2).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
+  const pattern=/<script id=\"dashboard-data\" type=\"application\/json\">[\s\S]*?<\/script>/;
+  return '<!DOCTYPE html>\n'+document.documentElement.outerHTML.replace(pattern, '<script id=\"dashboard-data\" type=\"application/json\">\n'+json+'\n<\/script>');
+}
+async function saveFile(){
+  const updated=buildUpdatedHtml();
+  const blob=new Blob([updated],{type:'text/html;charset=utf-8'});
+  try{
+    if(window.showSaveFilePicker){
+      const handle=await window.showSaveFilePicker({
+        suggestedName:'داشبورد سلولهای بنیادین_نسخه_قابل_ویرایش.html',
+        types:[{description:'HTML',accept:{'text/html':['.html']}}]
+      });
+      const writable=await handle.createWritable();
+      await writable.write(blob); await writable.close();
+      alert('فایل HTML با داده‌های جدید ذخیره شد.');
+      return;
+    }
+  }catch(e){ if(e?.name==='AbortError') return; console.error(e); }
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='داشبورد سلولهای بنیادین_نسخه_قابل_ویرایش.html';
+  a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  alert('نسخهٔ به‌روز شدهٔ HTML دانلود شد. آن فایل را به‌عنوان نسخهٔ جدید نگه دارید.');
+}
+function restoreEmbedded(){
+  if(confirm('همه تغییرات فعلی حذف و آخرین داده‌های ذخیره‌شده داخل همین فایل بارگذاری شود؟')){
+    DATA=JSON.parse(ORIGINAL_EMBEDDED_JSON); syncAllStatuses(); render();
+  }
+}
+function markUnsaved(){
+  const el=document.getElementById('saveState');
+  if(el) el.textContent='● تغییرات ذخیره‌نشده در فایل HTML';
+}
+function markSaved(){
+  const el=document.getElementById('saveState');
+  if(el) el.textContent='✓ داده‌ها در حافظهٔ همین صفحه به‌روز هستند؛ برای ماندگاری پس از بستن، «ذخیره در فایل» را بزنید.';
+}
+
+function renderToolbar(){
+ return `<div class="toolbar">
+   <button class="btn btn-success" onclick="saveFile()">💾 ذخیره در فایل HTML</button>
+   <button class="btn btn-secondary" onclick="downloadBackupJson()">⬇️ پشتیبان JSON</button>
+   <button class="btn btn-secondary" onclick="restoreEmbedded()">↩️ بازگردانی آخرین نسخهٔ فایل</button>
+   <span id="saveState" class="small-help">✓ داده‌ها از JSON داخلی همین فایل بارگذاری شده‌اند.</span>
+ </div>`;
+}
+function downloadBackupJson(){
+  const blob=new Blob([JSON.stringify(DATA,null,2)],{type:'application/json;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='stemcell_dashboard_data.json'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+
+function render(){
+  syncAllStatuses(); destroyCharts();
+  const app=document.getElementById('app');
+  app.innerHTML=renderToolbar() + (
+    currentTab==='document'?renderDocument():
+    currentTab==='overview'?renderOverview():
+    currentTab==='goals'?renderGoals():
+    currentTab==='strategies'?renderStrategies():
+    currentTab==='program'?renderProgram():
+    currentTab==='actions'?renderActions():renderReports());
+  attachEvents();
+  if(currentTab==='document') initDocumentViewer();
+  if(currentTab==='overview') drawOverviewCharts();
+  if(currentTab==='goals') drawGoalsChart();
+  if(currentTab==='reports') drawReportsCharts();
+  markSaved();
+}
+
+function renderDocument(){
+  return `<div class="card">
+    <h2>📜 سیری در سند ملی علوم و فناوری‌های سلول‌های بنیادی</h2>
+    <div class="document-viewer-card">
+      <div class="document-viewer-toolbar">
+        <button class="btn btn-secondary" onclick="documentZoomOut()" title="کوچک‌نمایی">−</button>
+        <button class="btn btn-primary" onclick="documentZoomReset()" title="بازنشانی">بازنشانی</button>
+        <button class="btn btn-secondary" onclick="documentZoomIn()" title="بزرگ‌نمایی">+</button>
+        <button class="btn btn-secondary" onclick="documentFitToScreen()" title="نمایش کامل">⛶ نمایش کامل</button>
+        <span id="documentZoomInfo" class="document-zoom-info">100%</span>
+      </div>
+      <div id="documentViewer" class="document-canvas-wrap">
+        <img id="documentImage" src="./119401.jpg" alt="اینفوگرافی سند ملی علوم و فناوری‌های سلول‌های بنیادی">
+      </div>
+      <div class="document-help">
+        🖱️ روی یک قسمت کلیک کنید تا همان ناحیه بزرگ شود؛ برای حرکت تصویر آن را بکشید.
+        با چرخ ماوس نیز می‌توانید روی نقطه موردنظر بزرگ‌نمایی/کوچک‌نمایی کنید.
+        در تلفن همراه، لمس و کشیدن و دو انگشت برای بزرگ‌نمایی فعال است.
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderOverview(){
+ const sc=statusCount(); const total=DATA.actions.length;
+ return `<div class="stats-grid">
+   <div class="stat-box"><div class="label">تحقق کلی سند</div><div class="value">${calcOverallGoals()}%</div></div>
+   <div class="stat-box"><div class="label">تعداد اهداف</div><div class="value">${DATA.goals.length}</div></div>
+   <div class="stat-box yellow"><div class="label">اهداف نیازمند بررسی</div><div class="value">${DATA.goals.filter(g=>!isMeasurableGoal(g)).length}</div></div>
+   <div class="stat-box"><div class="label">تعداد راهبردها</div><div class="value">${DATA.strategies.length}</div></div>
+   <div class="stat-box"><div class="label">تعداد اقدامات</div><div class="value">${total}</div></div>
+   <div class="stat-box green-dark"><div class="label">تکمیل‌شده</div><div class="value">${sc.completed}</div></div>
+   <div class="stat-box green-light"><div class="label">دستاورد عینی</div><div class="value">${sc.achieved}</div></div>
+   <div class="stat-box yellow"><div class="label">خروجی اولیه</div><div class="value">${sc.initial_output}</div></div>
+   <div class="stat-box orange"><div class="label">فعالیت اولیه</div><div class="value">${sc.initial}</div></div>
+   <div class="stat-box red"><div class="label">مغفول</div><div class="value">${sc.neglected}</div></div>
+ </div>
+ <div class="card"><h2>نمودار وضعیت اقدامات</h2><div class="chart-container"><canvas id="overviewChart"></canvas></div></div>
+ <div class="card"><h2>تحقق اهداف کلان</h2>${DATA.goals.map(g=>`<div class="bar-row"><div class="bar-label">${esc(g.id)}. ${esc(g.title)}</div><div class="bar-track"><div class="bar-fill goal-bar" style="width:${isMeasurableGoal(g)?clampPercent(g.achievement):0}%">${isMeasurableGoal(g)?clampPercent(g.achievement)+'%':'نیازمند بررسی'}</div></div></div>`).join('')}<div style="margin-top:15px;text-align:center;font-weight:bold;color:var(--primary-dark)">میانگین وزنی تحقق اهداف: ${calcOverallGoals()}%</div></div>
+ <div class="card"><h2>قاعدهٔ خودکار دسته‌بندی اقدامات</h2><div class="legend">${STATUS_RULES.map(v=>`<div class="legend-item"><span class="dot ${v.color}"></span>${v.label} (${v.key==='completed'?'>90':v.key==='achieved'?'70–90':v.key==='initial_output'?'50–<70':v.key==='initial'?'10–<50':'<10'}%)</div>`).join('')}</div><div class="small-help">وضعیت هیچ اقدام به‌صورت دستی انتخاب نمی‌شود و همیشه از «درصد تحقق» محاسبه می‌گردد.</div></div>`;
+}
+function renderGoals(){
+ const measurable=DATA.goals.filter(isMeasurableGoal); const sorted=[...measurable].sort((a,b)=>Number(b.achievement)-Number(a.achievement));
+ const max=sorted.length?Math.max(...sorted.map(g=>Number(g.achievement))):'—'; const min=sorted.length?Math.min(...sorted.map(g=>Number(g.achievement))):'—';
+ return `<div class="stats-grid"><div class="stat-box"><div class="label">تعداد اهداف</div><div class="value">${DATA.goals.length}</div></div><div class="stat-box"><div class="label">میانگین تحقق</div><div class="value">${calcOverallGoals()}%</div></div><div class="stat-box green-dark"><div class="label">بیشترین</div><div class="value">${max}%</div></div><div class="stat-box red"><div class="label">کمترین</div><div class="value">${min}%</div></div></div>
+ <div class="card"><h2>نمودار میله‌ای تحقق اهداف</h2><div class="chart-container"><canvas id="goalsChart"></canvas></div></div>
+ <div class="card"><div class="editor-head"><h2>اهداف</h2><button class="btn btn-primary" onclick="addGoal()">➕ افزودن هدف</button></div><div class="editor-list">${DATA.goals.map(g=>`<div class="editor-card"><div class="editor-head"><div><b>هدف ${esc(g.id)}: ${esc(g.title)}</b><div class="meta-line">وزن: ${esc(g.weight)} | تحقق: ${isMeasurableGoal(g)?clampPercent(g.achievement)+'%':'نیازمند بررسی'}</div></div><div class="editor-actions"><button class="btn btn-secondary" onclick="editGoal(${g.id})">✏️ ویرایش</button><button class="btn btn-danger" onclick="deleteGoal(${g.id})">🗑 حذف</button></div></div><div style="margin-top:7px">${esc(g.description||'')}</div></div>`).join('')}</div></div>`;
+}
+function renderStrategies(){
+ return `<div class="sync-banner">هر راهبرد، عنوان، توضیح و فهرست اقدامات مربوط به خود را از دادهٔ مرکزی دریافت می‌کند. اضافه/حذف/ویرایش در این بخش بلافاصله در «نمای کلی»، «کل برنامه»، «فهرست اقدامات» و گزارش‌ها منعکس می‌شود.</div><div class="card"><div class="editor-head"><h2>راهبردها و اقدامات</h2><button class="btn btn-primary" onclick="addStrategy()">➕ افزودن راهبرد</button></div><div class="filters"><input type="text" id="searchStrat" placeholder="جستجو در راهبردها..."></div><div class="editor-list">${DATA.strategies.map(s=>renderStrategyEditorCard(s)).join('')}</div></div>`;
+}
+function renderStrategyEditorCard(s){
+ const acts=getStrategyActions(s.id), sc=calcStrategyScore(s.id);
+ return `<div class="editor-card strategy-card"><div class="editor-head"><div><div class="strategy-title"><span class="dot ${sc>=90?'green-dark':sc>=70?'green-light':sc>=50?'yellow':sc>=10?'orange':'red'}"></span>راهبرد ${esc(s.id)}: ${esc(s.title)}</div><div class="meta-line">${esc(s.description)} | تحقق راهبرد: ${sc.toFixed(0)}% | ${acts.length} اقدام</div></div><div class="editor-actions"><button class="btn btn-secondary" onclick="editStrategy(${s.id})">✏️ ویرایش راهبرد</button><button class="btn btn-primary" onclick="addAction(${s.id})">➕ افزودن اقدام</button><button class="btn btn-danger" onclick="deleteStrategy(${s.id})">🗑 حذف راهبرد</button></div></div><div style="margin-top:12px">${acts.length?acts.map(a=>renderInlineAction(a)).join(''):'<div class="empty-state">هنوز اقدامی زیر این راهبرد ثبت نشده است.</div>'}</div></div>`;
+}
+function renderInlineAction(a){syncActionStatus(a); const st=STATUS_BY_KEY[a.status]; return `<div class="action-item ${a.status}"><div style="flex:1"><div class="action-title">اقدام ${esc(a.id)}: ${esc(a.title)}</div><div class="meta-line">${esc(a.description||'')} | دستگاه مسئول: ${esc(a.owner||'—')} | تحقق: ${a.achievement}%</div></div><span class="action-badge" style="background:var(--${st.color})">${st.label}</span><div class="editor-actions"><button class="btn btn-secondary" onclick="editAction(${a.id})">✏️</button><button class="btn btn-danger" onclick="deleteAction(${a.id})">🗑</button></div></div>`;}
+function renderProgram(){
+ return `<div class="card"><h2>کل برنامه</h2><div class="small-help">این نما از همان دادهٔ مرکزی راهبردها و اقدامات ساخته می‌شود؛ بنابراین با هر ویرایش، اعداد و عناوین در همهٔ نماها همگام هستند.</div></div>${DATA.strategies.map(s=>`<div class="program-strategy"><div class="program-head"><b>راهبرد ${esc(s.id)}: ${esc(s.title)}</b><span>${getStrategyActions(s.id).length} اقدام | ${calcStrategyScore(s.id).toFixed(0)}% تحقق</span></div><div class="program-actions">${getStrategyActions(s.id).map(renderInlineAction).join('')||'<div class="empty-state">بدون اقدام</div>'}</div></div>`).join('')}`;
+}
+function renderActions(){
+ return `<div class="filters"><input type="text" id="searchAct" placeholder="جستجو در عنوان اقدام..."><select id="filterStrat"><option value="">همه راهبردها</option>${DATA.strategies.map(s=>`<option value="${s.id}">${esc(s.title)}</option>`).join('')}</select><select id="filterStatus"><option value="">همه دسته‌ها</option>${STATUS_RULES.map(v=>`<option value="${v.key}">${v.label}</option>`).join('')}</select><input type="text" id="filterOwner" placeholder="دستگاه مسئول..."></div><div class="card"><div class="editor-head"><h2>فهرست ${DATA.actions.length} اقدام</h2><button class="btn btn-primary" onclick="addAction()">➕ افزودن اقدام</button></div><div id="actionsList">${DATA.actions.map(renderActionRow).join('')}</div></div>`;
+}
+function renderActionRow(a){syncActionStatus(a);const st=STATUS_BY_KEY[a.status];return `<div class="action-item ${a.status}" data-search="${esc(a.title).toLowerCase()}" data-strategy="${a.strategyId}" data-status="${a.status}" data-owner="${esc(a.owner).toLowerCase()}"><div style="flex:1"><div class="action-title">اقدام ${esc(a.id)}: ${esc(a.title)}</div><div class="meta-line">${esc(a.owner)} | تحقق: ${a.achievement}% | دسته: ${st.label}</div><div class="small-help">${esc(a.description||'')}</div></div><span class="action-badge" style="background:var(--${st.color})">${st.label}</span><button class="btn btn-secondary" onclick="editAction(${a.id})">✏️</button><button class="btn btn-danger" onclick="deleteAction(${a.id})">🗑</button></div>`;}
+function renderReports(){
+ const sc=statusCount(), ownerMap={};
+ DATA.actions.forEach(a=>{syncActionStatus(a);if(!ownerMap[a.owner])ownerMap[a.owner]={total:0,sum:0,counts:{completed:0,achieved:0,initial_output:0,initial:0,neglected:0}};ownerMap[a.owner].total++;ownerMap[a.owner].sum+=Number(a.achievement)||0;ownerMap[a.owner].counts[a.status]++;});
+ const owners=Object.entries(ownerMap).sort((a,b)=>(b[1].sum/b[1].total)-(a[1].sum/a[1].total));
+ return `<div class="card"><h2>گزارش کلی وضعیت سند</h2><div class="chart-container"><canvas id="reportChart1"></canvas></div></div><div class="card"><h2>عملکرد دستگاه‌های مسئول</h2><table><thead><tr><th>دستگاه</th><th>تعداد اقدام</th><th>میانگین تحقق</th><th>تکمیل</th><th>دستاورد</th><th>خروجی</th><th>فعالیت</th><th>مغفول</th></tr></thead><tbody>${owners.map(([name,d])=>`<tr><td>${esc(name)}</td><td>${d.total}</td><td><b>${(d.sum/d.total).toFixed(0)}%</b></td><td>${d.counts.completed}</td><td>${d.counts.achieved}</td><td>${d.counts.initial_output}</td><td>${d.counts.initial}</td><td>${d.counts.neglected}</td></tr>`).join('')}</tbody></table></div><div class="card"><div class="editor-head"><h2>چالش‌ها و پیشنهادات (از سند)</h2><button class="btn btn-primary" onclick="addChallenge()">➕ افزودن چالش</button></div><div class="editor-list">${DATA.challenges.map(c=>`<div class="editor-card"><div class="editor-head"><div><b>🔹 ${esc(c.title)}</b></div><div class="editor-actions"><button class="btn btn-secondary" onclick="editChallenge(${c.id})">✏️ ویرایش</button><button class="btn btn-danger" onclick="deleteChallenge(${c.id})">🗑 حذف</button></div></div><p style="margin-top:8px"><b>چالش:</b> ${esc(c.description)}</p><p style="margin-top:5px"><b>پیشنهاد:</b> ${esc(c.suggestion)}</p></div>`).join('')}</div></div>`;
+}
+
+function drawOverviewCharts(){const ctx=document.getElementById('overviewChart');if(!ctx)return;const sc=statusCount();charts.overview=new Chart(ctx,{type:'doughnut',data:{labels:STATUS_RULES.map(v=>v.label),datasets:[{data:STATUS_RULES.map(v=>sc[v.key]),backgroundColor:['#15803d','#22c55e','#eab308','#f97316','#dc2626']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}});}
+function drawGoalsChart(){const ctx=document.getElementById('goalsChart');if(!ctx)return;const gs=DATA.goals.filter(isMeasurableGoal);charts.goals=new Chart(ctx,{type:'bar',data:{labels:gs.map(g=>'هدف '+g.id),datasets:[{label:'درصد تحقق',data:gs.map(g=>clampPercent(g.achievement)),backgroundColor:gs.map(g=>g.achievement>90?'#15803d':g.achievement>=70?'#22c55e':g.achievement>=50?'#eab308':g.achievement>=10?'#f97316':'#dc2626')}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,scales:{x:{max:100}},plugins:{legend:{display:false}}}});}
+function drawReportsCharts(){const ctx=document.getElementById('reportChart1');if(!ctx)return;const sc=statusCount();charts.report1=new Chart(ctx,{type:'bar',data:{labels:STATUS_RULES.map(v=>v.label),datasets:[{label:'تعداد اقدامات',data:STATUS_RULES.map(v=>sc[v.key]),backgroundColor:['#15803d','#22c55e','#eab308','#f97316','#dc2626']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});}
+function destroyCharts(){Object.values(charts).forEach(c=>c?.destroy());charts={};}
+
+
+/* ===== کنترل تعاملی اینفوگرافی ===== */
+let documentViewerReady=false;
+let documentImageNaturalWidth=0;
+let documentImageNaturalHeight=0;
+let documentScale=1;
+let documentMinScale=0.5;
+let documentMaxScale=6;
+let documentPanX=0;
+let documentPanY=0;
+let documentPointerId=null;
+let documentDragging=false;
+let documentDownX=0;
+let documentDownY=0;
+let documentStartPanX=0;
+let documentStartPanY=0;
+let documentMoved=false;
+let documentLastTouchDistance=null;
+let documentLastTouchCenter=null;
+
+function initDocumentViewer(){
+  const wrap=document.getElementById('documentViewer');
+  const img=document.getElementById('documentImage');
+  if(!wrap || !img) return;
+  const setup=()=>{
+    documentImageNaturalWidth=img.naturalWidth;
+    documentImageNaturalHeight=img.naturalHeight;
+    if(!documentImageNaturalWidth || !documentImageNaturalHeight){ showDocumentError(); return; }
+    documentFitToScreen();
+    if(!documentViewerReady){ setupDocumentInteractions(wrap); documentViewerReady=true; }
+  };
+  if(img.complete) setup(); else img.onload=setup;
+  img.onerror=showDocumentError;
+}
+function showDocumentError(){
+  const wrap=document.getElementById('documentViewer');
+  if(wrap) wrap.innerHTML='<div class="document-error"><b>خطا در بارگذاری اینفوگرافی</b><br><br>مطمئن شوید فایل <b>119401.jpg</b> دقیقاً در همان پوشه‌ای قرار دارد که فایل HTML قرار دارد.</div>';
+}
+function getDocumentBaseSize(){
+  const wrap=document.getElementById('documentViewer');
+  if(!wrap || !documentImageNaturalWidth) return 1;
+  const pad=24;
+  return Math.min((wrap.clientWidth-pad)/documentImageNaturalWidth,(wrap.clientHeight-pad)/documentImageNaturalHeight);
+}
+function updateDocumentTransform(){
+  const img=document.getElementById('documentImage');
+  if(!img) return;
+  const base=getDocumentBaseSize();
+  img.style.width=(documentImageNaturalWidth*base)+'px';
+  img.style.height=(documentImageNaturalHeight*base)+'px';
+  img.style.transform=`translate(${documentPanX}px,${documentPanY}px) scale(${documentScale})`;
+  const info=document.getElementById('documentZoomInfo');
+  if(info) info.textContent=Math.round(documentScale*100)+'%';
+}
+function documentFitToScreen(){
+  const wrap=document.getElementById('documentViewer');
+  if(!wrap || !documentImageNaturalWidth) return;
+  documentScale=1;
+  const base=getDocumentBaseSize();
+  const w=documentImageNaturalWidth*base, h=documentImageNaturalHeight*base;
+  documentPanX=(wrap.clientWidth-w)/2; documentPanY=(wrap.clientHeight-h)/2;
+  updateDocumentTransform();
+}
+function documentZoomAt(newScale,clientX,clientY){
+  const wrap=document.getElementById('documentViewer'); if(!wrap) return;
+  const oldScale=documentScale;
+  documentScale=Math.max(documentMinScale,Math.min(documentMaxScale,newScale));
+  const rect=wrap.getBoundingClientRect();
+  const x=clientX-rect.left, y=clientY-rect.top, ratio=documentScale/oldScale;
+  documentPanX=x-(x-documentPanX)*ratio; documentPanY=y-(y-documentPanY)*ratio;
+  updateDocumentTransform();
+}
+function documentZoomIn(){
+  const wrap=document.getElementById('documentViewer'); if(!wrap) return;
+  const r=wrap.getBoundingClientRect(); documentZoomAt(documentScale*1.25,r.left+r.width/2,r.top+r.height/2);
+}
+function documentZoomOut(){
+  const wrap=document.getElementById('documentViewer'); if(!wrap) return;
+  const r=wrap.getBoundingClientRect(); documentZoomAt(documentScale/1.25,r.left+r.width/2,r.top+r.height/2);
+}
+function documentZoomReset(){documentFitToScreen();}
+function documentDistance(t1,t2){
+  const dx=t1.clientX-t2.clientX, dy=t1.clientY-t2.clientY;
+  return Math.sqrt(dx*dx+dy*dy);
+}
+function documentCenter(t1,t2){return {x:(t1.clientX+t2.clientX)/2,y:(t1.clientY+t2.clientY)/2};}
+function setupDocumentInteractions(wrap){
+  wrap.addEventListener('pointerdown',(e)=>{
+    if(e.pointerType==='mouse' && e.button!==0) return;
+    documentPointerId=e.pointerId; wrap.setPointerCapture?.(e.pointerId);
+    documentDragging=true; documentMoved=false;
+    documentDownX=e.clientX; documentDownY=e.clientY;
+    documentStartPanX=documentPanX; documentStartPanY=documentPanY;
+    wrap.classList.add('dragging');
+  });
+  wrap.addEventListener('pointermove',(e)=>{
+    if(e.pointerId!==documentPointerId || !documentDragging) return;
+    const dx=e.clientX-documentDownX, dy=e.clientY-documentDownY;
+    if(Math.abs(dx)>4 || Math.abs(dy)>4) documentMoved=true;
+    documentPanX=documentStartPanX+dx; documentPanY=documentStartPanY+dy;
+    updateDocumentTransform();
+  });
+  wrap.addEventListener('pointerup',(e)=>{
+    if(e.pointerId!==documentPointerId) return;
+    const wasMoved=documentMoved;
+    documentDragging=false; documentPointerId=null; wrap.classList.remove('dragging');
+    if(!wasMoved) documentZoomAt(documentScale*1.35,e.clientX,e.clientY);
+  });
+  wrap.addEventListener('pointercancel',()=>{documentDragging=false;documentPointerId=null;wrap.classList.remove('dragging');});
+  wrap.addEventListener('wheel',(e)=>{e.preventDefault();documentZoomAt(documentScale*(e.deltaY<0?1.12:1/1.12),e.clientX,e.clientY);},{passive:false});
+  wrap.addEventListener('touchstart',(e)=>{
+    if(e.touches.length===2){
+      documentDragging=false;
+      documentLastTouchDistance=documentDistance(e.touches[0],e.touches[1]);
+      documentLastTouchCenter=documentCenter(e.touches[0],e.touches[1]);
+    }
+  },{passive:false});
+  wrap.addEventListener('touchmove',(e)=>{
+    if(e.touches.length!==2 || !documentLastTouchDistance) return;
+    e.preventDefault();
+    const d=documentDistance(e.touches[0],e.touches[1]), c=documentCenter(e.touches[0],e.touches[1]);
+    documentZoomAt(documentScale*(d/documentLastTouchDistance),c.x,c.y);
+    documentPanX+=c.x-documentLastTouchCenter.x; documentPanY+=c.y-documentLastTouchCenter.y;
+    documentLastTouchDistance=d; documentLastTouchCenter=c; updateDocumentTransform();
+  },{passive:false});
+  wrap.addEventListener('touchend',()=>{documentLastTouchDistance=null;documentLastTouchCenter=null;});
+}
+window.addEventListener('resize',()=>{if(document.getElementById('documentViewer')) documentFitToScreen();});
+
+function attachEvents(){
+ document.querySelectorAll('.tab-btn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentTab=b.dataset.tab;render();});
+ const s=document.getElementById('searchAct'),fs=document.getElementById('filterStrat'),fst=document.getElementById('filterStatus'),fo=document.getElementById('filterOwner');[s,fs,fst,fo].forEach(el=>{if(el)el.oninput=el.onchange=filterActions;});
+ const ss=document.getElementById('searchStrat');if(ss)ss.oninput=e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('.editor-card.strategy-card').forEach(c=>c.style.display=c.textContent.toLowerCase().includes(q)?'block':'none');};
+}
+function filterActions(){const q=(document.getElementById('searchAct').value||'').toLowerCase(),strat=document.getElementById('filterStrat').value,status=document.getElementById('filterStatus').value,owner=(document.getElementById('filterOwner').value||'').toLowerCase();document.querySelectorAll('#actionsList .action-item').forEach(el=>el.style.display=(!q||el.dataset.search.includes(q))&&(!strat||el.dataset.strategy===strat)&&(!status||el.dataset.status===status)&&(!owner||el.dataset.owner.includes(owner))?'flex':'none');}
+
+function openModal(htmlContent){document.getElementById('modalBody').innerHTML='<div class="modal-brand">دبیرخانه شورای عالی انقلاب فرهنگی – معاونت فناوری و اقتصاد دانش‌بنیان</div>'+htmlContent;document.getElementById('modal').classList.add('active');}
+function closeModal(){document.getElementById('modal').classList.remove('active');}
+document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')closeModal();};
+
+function editGoal(id){const g=DATA.goals.find(x=>x.id===Number(id));openModal(`<h2>ویرایش هدف ${g.id}</h2><div class="form-group"><label>عنوان هدف</label><input id="gTitle" value="${esc(g.title)}"></div><div class="form-row"><div class="form-group"><label>وزن</label><input type="number" id="gWeight" value="${g.weight}" min="0" step="0.1"></div><div class="form-group"><label>درصد تحقق</label><input type="number" id="gAch" value="${isMeasurableGoal(g)?g.achievement:''}" min="0" max="100" step="0.1"></div></div><div class="form-group"><label><input type="checkbox" id="gNotMeasurable" ${!isMeasurableGoal(g)?'checked':''}> این هدف قابل محاسبه نیست</label></div><div class="form-group"><label>توضیحات</label><textarea id="gDesc">${esc(g.description)}</textarea></div><div class="form-group"><label>یادداشت</label><textarea id="gNotes">${esc(g.notes||'')}</textarea></div><button class="btn btn-primary" onclick="saveGoal(${g.id})">💾 ذخیره</button>`);}
+function saveGoal(id){const g=DATA.goals.find(x=>x.id===Number(id));g.title=document.getElementById('gTitle').value.trim();g.weight=Math.max(0,Number(document.getElementById('gWeight').value)||0);const n=document.getElementById('gNotMeasurable').checked,raw=document.getElementById('gAch').value;g.isMeasurable=!n;g.achievement=n||raw===''?null:clampPercent(raw);g.description=document.getElementById('gDesc').value;g.notes=document.getElementById('gNotes').value;closeModal();markUnsaved();render();}
+function addGoal(){const id=nextId(DATA.goals);DATA.goals.push({id,title:'هدف جدید',weight:1,achievement:0,description:'',notes:''});editGoal(id);}
+function deleteGoal(id){if(!confirm('هدف حذف شود؟'))return;DATA.goals=DATA.goals.filter(x=>x.id!==Number(id));markUnsaved();render();}
+
+function strategyForm(s){return `<h2>${s?'ویرایش':'افزودن'} راهبرد</h2><div class="form-group"><label>عنوان راهبرد</label><input id="sTitle" value="${esc(s?.title||'')}"></div><div class="form-group"><label>توضیحات راهبرد</label><textarea id="sDesc">${esc(s?.description||'')}</textarea></div><div class="form-group"><label>اهداف مرتبط (شناسه‌ها با ویرگول)</label><input id="sGoals" value="${esc((s?.goalIds||[]).join(','))}" placeholder="مثلاً 1,3"></div><div class="small-help">برای اتصال راهبرد به اهداف، شناسه‌های اهداف را وارد کنید.</div><button class="btn btn-primary" onclick="${s?'saveStrategy('+s.id+')':'saveNewStrategy()'}">💾 ذخیره</button>`;}
+function editStrategy(id){openModal(strategyForm(getStrategy(id)));}
+function addStrategy(){openModal(strategyForm(null));}
+function saveStrategy(id){const s=getStrategy(id);s.title=document.getElementById('sTitle').value.trim()||'راهبرد بدون عنوان';s.description=document.getElementById('sDesc').value;s.goalIds=document.getElementById('sGoals').value.split(',').map(x=>Number(x.trim())).filter(Number.isFinite);closeModal();markUnsaved();render();}
+function saveNewStrategy(){const id=nextId(DATA.strategies);DATA.strategies.push({id,title:'',goalIds:[],description:''});saveStrategy(id);}
+function deleteStrategy(id){const sid=Number(id);const acts=getStrategyActions(sid);if(!confirm(`راهبرد و ${acts.length} اقدام وابسته حذف شوند؟`))return;DATA.strategies=DATA.strategies.filter(s=>s.id!==sid);DATA.actions=DATA.actions.filter(a=>a.strategyId!==sid);markUnsaved();render();}
+
+function actionForm(a){
+ const status=a?STATUS_BY_KEY[classifyAchievement(a.achievement)]:STATUS_BY_KEY.neglected;
+ return `<h2>${a?'ویرایش':'افزودن'} اقدام${a?' '+a.id:''}</h2><div class="form-group"><label>عنوان اقدام</label><input id="aTitle" value="${esc(a?.title||'')}"></div><div class="form-row"><div class="form-group"><label>راهبرد</label><select id="aStrat">${DATA.strategies.map(s=>`<option value="${s.id}" ${a&&s.id===a.strategyId?'selected':''}>${esc(s.title)}</option>`).join('')}</select></div><div class="form-group"><label>درصد تحقق</label><input type="number" id="aAch" value="${a?clampPercent(a.achievement):0}" min="0" max="100" step="0.1" oninput="previewActionCategory()"></div></div><div id="aCategoryPreview" class="form-group"><label>دستهٔ خودکار</label><input class="readonly-field" id="aCat" readonly value="${status.label}"><div class="small-help">قواعد: بالای ۹۰٪ تکمیل‌شده | ۷۰ تا ۹۰٪ دستاورد عینی | ۵۰ تا کمتر از ۷۰٪ خروجی اولیه | ۱۰ تا کمتر از ۵۰٪ فعالیت اولیه | زیر ۱۰٪ مغفول</div></div><div class="form-row"><div class="form-group"><label>دستگاه مسئول</label><input id="aOwner" value="${esc(a?.owner||'')}"></div><div class="form-group"><label>وزن اقدام در محاسبه راهبرد</label><input type="number" id="aWeight" value="${a?.weight||1}" min="0" step="0.1"></div></div><div class="form-group"><label>توضیحات</label><textarea id="aDesc">${esc(a?.description||'')}</textarea></div><div class="form-group"><label>یادداشت / چالش</label><textarea id="aNotes">${esc(a?.notes||'')}</textarea></div><button class="btn btn-primary" onclick="${a?'saveAction('+a.id+')':'saveNewAction()'}">💾 ذخیره</button>`;
+}
+function previewActionCategory(){const el=document.getElementById('aCat');if(el)el.value=STATUS_BY_KEY[classifyAchievement(document.getElementById('aAch').value)].label;}
+function editAction(id){openModal(actionForm(getAction(id)));}
+function addAction(strategyId){if(!DATA.strategies.length){alert('ابتدا حداقل یک راهبرد ایجاد کنید.');return;}openModal(actionForm({strategyId:strategyId||DATA.strategies[0].id,achievement:0,weight:1}));}
+function saveAction(id){const a=getAction(id);a.title=document.getElementById('aTitle').value.trim()||'اقدام بدون عنوان';a.strategyId=Number(document.getElementById('aStrat').value);a.achievement=clampPercent(document.getElementById('aAch').value);syncActionStatus(a);a.owner=document.getElementById('aOwner').value.trim();a.weight=Number(document.getElementById('aWeight').value)||1;a.description=document.getElementById('aDesc').value;a.notes=document.getElementById('aNotes').value;closeModal();markUnsaved();render();}
+function saveNewAction(){const a={id:nextId(DATA.actions),title:'',strategyId:Number(document.getElementById('aStrat').value),owner:'',achievement:clampPercent(document.getElementById('aAch').value),weight:Number(document.getElementById('aWeight').value)||1,description:document.getElementById('aDesc').value,notes:document.getElementById('aNotes').value};syncActionStatus(a);DATA.actions.push(a);closeModal();markUnsaved();render();}
+function deleteAction(id){if(!confirm('این اقدام حذف شود؟'))return;DATA.actions=DATA.actions.filter(a=>a.id!==Number(id));markUnsaved();render();}
+
+function challengeForm(c){return `<h2>${c?'ویرایش':'افزودن'} چالش</h2><div class="form-group"><label>عنوان چالش</label><input id="cTitle" value="${esc(c?.title||'')}"></div><div class="form-group"><label>شرح چالش</label><textarea id="cDesc">${esc(c?.description||'')}</textarea></div><div class="form-group"><label>پیشنهاد</label><textarea id="cSug">${esc(c?.suggestion||'')}</textarea></div><button class="btn btn-primary" onclick="${c?'saveChallenge('+c.id+')':'saveNewChallenge()'}">💾 ذخیره</button>`;}
+function editChallenge(id){openModal(challengeForm(getChallenge(id)));}
+function addChallenge(){openModal(challengeForm(null));}
+function saveChallenge(id){const c=getChallenge(id);c.title=document.getElementById('cTitle').value.trim();c.description=document.getElementById('cDesc').value;c.suggestion=document.getElementById('cSug').value;closeModal();markUnsaved();render();}
+function saveNewChallenge(){DATA.challenges.push({id:nextId(DATA.challenges),title:document.getElementById('cTitle').value.trim(),description:document.getElementById('cDesc').value,suggestion:document.getElementById('cSug').value});closeModal();markUnsaved();render();}
+function deleteChallenge(id){if(!confirm('این چالش حذف شود؟'))return;DATA.challenges=DATA.challenges.filter(c=>c.id!==Number(id));markUnsaved();render();}
+
+syncAllStatuses();
+render();
+</script>
+</body>
+</html>
